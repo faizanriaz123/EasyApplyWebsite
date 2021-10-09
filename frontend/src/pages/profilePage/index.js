@@ -7,9 +7,11 @@ import Button from '@mui/material/Button';
 function profile() {
     const profile = (
         <div id="root">
-            <div id="image">
-                <img src="" width="200"></img>
+            <div id="profileHeader">
+                <img src="./im.jpg" width="200"></img>
+                <Button>Edit</Button>
             </div>
+            
             <div id="name">
                 <h2>name here</h2>
             </div>
