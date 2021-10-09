@@ -1,15 +1,18 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import Button from '@mui/material/Button';
-
-// image, name, introduciton, age, 
+import "./profilePage.css"
 
 function profile() {
     const profile = (
         <div id="root">
             <div id="profileHeader">
-                <img src="./im.jpg" width="200"></img>
-                <Button>Edit</Button>
+                <div>
+                    <img src="./im.jpg" width="200"></img>
+                </div>
+                <div>
+                    <Button>Edit</Button>
+                </div>
             </div>
             
             <div id="name">
@@ -24,5 +27,5 @@ function profile() {
             </div>
         </div>
     );
-    ReactDOM.render(landingPage, getElementByID('root'));
+    ReactDOM.render(profile, getElementByID('root'));
 }
