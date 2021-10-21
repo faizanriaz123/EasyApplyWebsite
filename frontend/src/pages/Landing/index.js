@@ -6,6 +6,9 @@ import "../../components/Footer/index.js"
 import "../../components/Header/index.js"
 import logo from "./easy-apply_logo.jpg"
 import { Link } from 'react-router-dom';
+import testimonial1 from "./testimonial1.jpg"
+import testimonial2 from "./testimonial2.jpg"
+import testimonial3 from "./testimonial3.jpg"
 
 const landingPage = (props) => {
     return (<div id="root">
@@ -42,15 +45,15 @@ const landingPage = (props) => {
             </div>
             <div id="testimonial1">
                 <p>easyApply is great!</p>
-                <img src="./testimonal1.jpg"></img>
+                <img src={testimonial1}></img>
             </div>
-            <div>
+            <div id="testimonial2">
                 <p>I found a job so easily!</p>
-                <img src="./testimonal2.jpg"></img>
+                <img src={testimonial2}></img>
             </div>
-            <div>
+            <div id="testimonial3">
                 <p>It usually takes weeks to find the right candidate, I found them in 3 days!</p>
-                <img src="./testimonal3.jpg"></img>
+                <img src={testimonial3}></img>
             </div> 
         </div>
     </div>)
