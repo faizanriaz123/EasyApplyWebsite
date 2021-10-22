@@ -12,12 +12,12 @@ import testimonial3 from "./testimonial3.jpg"
 
 const landingPage = (props) => {
     return (<div id="root">
+        <header>
+            <img src={logo}></img>
+        </header>
         <div id="topBanner">
             <div id="jobSeekerQuestion">
                 <h3>Looking for a job? Look no further...</h3>
-            </div>
-            <div id ="promotionalImage">
-                <img src={logo}></img>
             </div>
             <div id ="employerQuestion">
                 <h3>Tired of sifting through resumes? Then don't!</h3>
