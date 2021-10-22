@@ -88,6 +88,7 @@ function SearchBar({placeholder, data}){
                     </tr>
                 </thead>
 
+                
                 {filteredData.length === 0 ? ( //IF STATEMENT
                     <tbody>
                     {unfilteredData.map((info) => (
