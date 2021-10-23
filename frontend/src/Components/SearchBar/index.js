@@ -6,6 +6,7 @@ import api from "../../api";
 
 function SearchBar({placeholder, data}){
     const [filteredData, setFilteredData] = useState([]); 
+
     const [unfilteredData, setUnfilteredData] = useState([]); // CREATING A CONSTANT UNFILTERED DATA
     const [wordEntered, setWordEntered] = useState(""); 
     
@@ -31,7 +32,7 @@ function SearchBar({placeholder, data}){
         const dict = await api.get("/jobs/search/"+searchWord);
         const myData = dict['data']['jobs']; 
         setFilteredData(myData); 
-        
+
         const newFilter = myData.filter((value) => {
             return value.jobName.toLowerCase().includes(searchWord.toLowerCase()) || value.companyName.toLowerCase().includes(searchWord.toLowerCase()); 
         });
@@ -88,7 +89,6 @@ function SearchBar({placeholder, data}){
                     </tr>
                 </thead>
 
-                
                 {filteredData.length === 0 ? ( //IF STATEMENT
                     <tbody>
                     {unfilteredData.map((info) => (
@@ -102,6 +102,7 @@ function SearchBar({placeholder, data}){
 
                 </tbody>
                  ) : (
+
                 <tbody>
                     {filteredData.map((info) => (
                         <tr>
@@ -115,6 +116,7 @@ function SearchBar({placeholder, data}){
                 </tbody>
                 )}
             </table>
+
 
         </div>
     )
