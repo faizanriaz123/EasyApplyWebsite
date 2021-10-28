@@ -15,6 +15,7 @@ import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import logo from "./easy-apply_logo.jpg"
+import './landing.css'
 
 function Copyright(props) {
   return (
