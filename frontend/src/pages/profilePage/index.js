@@ -1,11 +1,17 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import NavBar from '../../Components/NavBar';
 import Button from '@mui/material/Button';
-import "./profilePage.css"
-import image from "./image.jpg"
+import "./profilePage.css";
+import image from "./image.jpg";
+import Box from "@mui/material/Box";
 
 const profile = (props) => {
-    return (<div id="root">
+    return (
+    <div id="root">
+    <NavBar/>
+    <Box>
+
+    </Box>
         <div id="profileHeader">
             <div>
                 <img src={image} width="200"></img>
@@ -24,5 +30,9 @@ const profile = (props) => {
             <p>
             </p>
         </div>
-    </div>)
+    </div>
+    )
+
 }
+
+export default profile;

@@ -1,5 +1,18 @@
 import React, {useState, useEffect} from 'react';
+import NavBar from '../NavBar';
 import './SearchBar.css';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import TableFooter from '@mui/material/TableFooter';
+
+import Box from "@mui/material/Box";
+
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import api from "../../api"; 
@@ -22,7 +35,7 @@ function SearchBar({placeholder, data}){
     useEffect(() => {  
         {beforeAll()}
 
-       });
+       },[]);
 
     const handleFilter = async(event) => {
         const searchWord = event.target.value 
@@ -53,69 +66,84 @@ function SearchBar({placeholder, data}){
         setFilteredData([]); 
         setWordEntered(""); 
     }
+
+    const columns = [
+        { id: 'companyName', label: 'COMPANY', minWidth: 170 },
+        { id: 'jobName', label: 'POSTION', minWidth: 100 },
+        { id: 'introduction', label: 'DESCRIPTION', minWidth: 170},
+        { id: 'location', label: 'LOCATION', minWidth: 170},
+      ];
+    
+
+    const rows = filteredData.length !== 0 ? filteredData : unfilteredData
     return (
-        <div className="app-container">
-            <div className="search" onBeforeInput={beforeAll}>
-                <div className="searchInputs">
-                    <input type="text" placeholder="Search for Jobs"  value={wordEntered} onChange={handleFilter} />
-                    <div className="searchIcon">
-                        {filteredData.length === 0 ? (
-                        <SearchIcon /> 
-                        ) : (
-                        <ClearIcon id="clearBtn" onClick={clearInput}/>) }
-                    </div>
+        <Paper sx={{ width: '100%', overflow: 'hidden',backgroundColor: '#2b2b2b', height: "100vh" }}>
+        <NavBar/>
+        <div className="search" onBeforeInput={beforeAll}>
+            <div className="searchInputs">
+                <div className="searchIcon">
+                    {filteredData.length === 0 ? (
+                    <SearchIcon /> 
+                    ) : (
+                    <ClearIcon id="clearBtn" onClick={clearInput}/>) }
                 </div>
+                <input type="text" placeholder="Search for Jobs"  value={wordEntered} onChange={handleFilter} />
+            </div>
+            {filteredData.length !== 0 && (
+            <div className="dataResult">
+                {filteredData.slice(0, 15).map((value, key) => {
+                    return <a className="dataItem"> 
+                    <p> {value.jobName} at {value.companyName} </p>
+                    </a>
+                })}
+                </div> 
+            )}
+            </div>
                 
-                {filteredData.length != 0 && (
-                <div className="dataResult">
-                    {filteredData.slice(0, 15).map((value, key) => {
-                        return <a className="dataItem"> 
-                        <p> {value.jobName} at {value.companyName} </p>
-                        </a>
+        <TableContainer sx={{ maxHeight: 440, backgroundColor: '#2b2b2b' }}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth, color: "#00FECF", borderColor: "#1e1e1e", backgroundColor: '#1e1e1e' }}
+                  >
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow >
+          </TableHead>
+          <TableBody >
+            {rows.map((row) => {
+                console.log(row);
+                return (
+                  <TableRow role="checkbox" tabIndex={-1} key={row.code}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "#1e1e1e"
+                    }
+                  }}
+                  >
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell key={column.id} align={column.align} style={{ color: "#00FECF", borderColor: "#1e1e1e"}}>
+                          {column.format && typeof value === 'number'
+                            ? column.format(value)
+                            : value}
+                        </TableCell>
+                      );
                     })}
-                    </div> 
-                )}
-
-                </div>
-                
-                <table>
-                <thead>
-                    <tr>
-                        <th>Company</th>
-                        <th>Position Name</th>
-                        <th>Job Description</th>
-                        <th>Location</th>
-                    </tr>
-                </thead>
-
-                {filteredData.length === 0 ? ( //IF STATEMENT
-                    <tbody>
-                    {unfilteredData.map((info) => (
-                        <tr>
-                        <td>{info.companyName}</td>
-                        <td>{info.jobName}</td>
-                        <td>{info.introduction}</td>
-                        <td>{info.location}</td>
-                    </tr>
-                    ))}
-
-                </tbody>
-                 ) : (
-
-                <tbody>
-                    {filteredData.map((info) => (
-                        <tr>
-                        <td>{info.companyName}</td>
-                        <td>{info.jobName}</td>
-                        <td>{info.introduction}</td>
-                        <td>{info.location}</td>
-                    </tr>
-                    ))}
-                    
-                </tbody>
-                )}
-            </table>
-        </div>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    <Box sx={{ disply:'flex', height: '100%', backgroundColor: '#2b2b2b'  }}></Box>
+    </Paper>
     )
 
 }

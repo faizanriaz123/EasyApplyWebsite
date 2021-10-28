@@ -3,13 +3,13 @@ import './App.css';
 import { Route, Switch, Redirect } from "react-router-dom";
 // import api from './api';
 
-import Dummy from './pages/Dummy'
-import JobBoard from './pages/JobBoard'
-import SearchBar from './Components/SearchBar'
-import SignUp from './pages/Signup'
-import Login from './pages/Login'
-import landingPage from "./pages/Landing";
-import profilePage from "./pages/profilePage"
+// import Dummy from './pages/Dummy'
+// import JobBoard from './pages/JobBoard'
+import SearchBar from './Components/SearchBar';
+import SignUp from './Pages/Signup';
+import Login from './Pages/Login';
+import landingPage from "./Pages/Landing";
+import profilePage from "./Pages/profilePage";
 
 function App() {
   return (
