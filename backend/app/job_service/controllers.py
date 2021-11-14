@@ -44,6 +44,28 @@ def applyjob():
     db.session.commit()
     return "sucessful commit"
 
+@job_service.route('/searchtop10/<jobID>', methods=['POST'])
+@login_required
+@require_role('employer')
+def create():
+    req = request.json
+    jobID = req.get("jobID")
+    table = db.session.execute("SELECT * FROM appliedjob")
+    applicants_list = {'applicants':[]}
+    i = 0
+    for applicants in table:
+        userID = applicants.userID
+        if jobID == table.jobID and os.path.exists("../../../../applications/{jobID}/{userID}/pitch.mp4"):
+            applicant_dict = {
+                "userID": userID,
+                "userName": applicants.userName,
+            }
+            print(applicant_dict)
+            if(i < 9):
+                applicants_list["applicants"].append(applicant_dict)
+                i=i+1
+    return make_response(jsonify(applicants_list))
+
 @job_service.route('/get', methods=['GET'])
 @login_required
 def get():
