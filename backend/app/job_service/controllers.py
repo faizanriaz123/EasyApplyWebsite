@@ -34,6 +34,16 @@ def create():
     print(message)
     return make_response(message)
 
+@job_service.route('/applyjob', methods=['PUT'])
+@login_required
+@require_role('applicant')
+def applyjob():
+    req = request.json 
+    jobID = req.get("jobID")
+    db.session.add(AppliedJob(jobID,current_user.get_id()))
+    db.session.commit()
+    return "sucessful commit"
+
 @job_service.route('/searchwithpitch/<jobID>', methods=['POST'])
 @login_required
 @require_role('employer')
@@ -71,16 +81,6 @@ def create():
             applicants_list["applicants"].append(applicant_dict)
     return make_response(jsonify(applicants_list))
 
-@job_service.route('/applyjob', methods=['PUT'])
-@login_required
-@require_role('applicant')
-def applyjob():
-    req = request.json 
-    jobID = req.get("jobID")
-    db.session.add(AppliedJob(jobID,current_user.get_id()))
-    db.session.commit()
-    return "sucessful commit"
-
 @job_service.route('/get', methods=['GET'])
 @login_required
 def get():
@@ -101,7 +101,7 @@ def get():
         job_list["jobs"].append(job_dict)
     print(job_list)    
     return make_response(jsonify(job_list))
-        
+
 @job_service.route('/search/<userInput>', methods=['GET'])
 def displayJob(userInput):
     #if any stuff contains search input, then 1 else 0 for score. Then display all jobs with score of 1 
