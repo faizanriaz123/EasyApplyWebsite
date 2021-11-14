@@ -34,6 +34,25 @@ def create():
     print(message)
     return make_response(message)
 
+@job_service.route('/searchwithpitch/<jobID>', methods=['POST'])
+@login_required
+@require_role('employer')
+def create():
+    req = request.json
+    jobID = req.get("jobID")
+    table = db.session.execute("SELECT * FROM appliedjob")
+    applicants_list = {'applicants':[]}
+    for applicants in table:
+        userID = applicants.userID
+        if jobID == table.jobID and os.path.exists("../../../../applications/{jobID}/{userID}/pitch.mp4"):
+            applicant_dict = {
+                "userID": userID,
+                "userName": applicants.userName,
+            }
+            print(applicant_dict)
+            applicants_list["applicants"].append(applicant_dict)
+    return make_response(jsonify(applicants_list))
+
 @job_service.route('/search/<jobID>', methods=['POST'])
 @login_required
 @require_role('employer')
