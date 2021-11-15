@@ -2,9 +2,12 @@ import datetime
 # Import flask dependencies
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for, jsonify, \
-                  make_response
+                  make_response, url_for
 
-import os
+from flask_mail import Message
+
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from json import dumps
 
 from flask_login import  login_user, logout_user, current_user, login_required
 
@@ -131,7 +134,11 @@ def get_profile():
         data = Applicant.query.filter_by(user_id=current_user.get_id()).first()
     else:
         data = Employer.query.filter_by(user_id=current_user.get_id()).first()
-    return make_response(jsonify(data), 201)
+    # print(data.__dict__)
+    # print()
+    # return make_response(jsonify(dumps(data.__dict__)),201)
+    print(jsonify(data))
+    return make_response(jsonify(data),201)
 
 @auth_service.route("/profile", methods=['PUT'])
 def edit_profile():

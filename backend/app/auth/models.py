@@ -2,10 +2,11 @@
 # We will define this inside /app/__init__.py in the next sections.
 from app import db
 from flask_login import UserMixin
-
+from dataclasses import dataclass
 
 
 # Define a base model for other database tables to inherit
+@dataclass
 class Base(db.Model):
     __abstract__  = True
     date_created  = db.Column(db.DateTime,  default=db.func.current_timestamp())
@@ -32,7 +33,8 @@ class Role(Base):
     __tablename__ = 'roles'
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(50), unique=True)
-    
+
+
 class Authentication(UserMixin, Base):
     __tablename__ = 'auth'
     id    = db.Column(db.Integer, primary_key=True)
@@ -62,7 +64,19 @@ class Authentication(UserMixin, Base):
     def __repr__(self):
         return '<Auth user:{}>'.format(self.id)     
 
+@dataclass
 class Applicant(Base):
+    user_id : int
+    firstName : str
+    lastName : str
+    address : str
+    city : str
+    country : str
+    gender : str
+    birthDate : str
+    profilePath : str
+    vidPath : str
+
     __tablename__ = 'applicant'
     auth = db.relationship(Authentication)
     user_id = db.Column(db.Integer, db.ForeignKey('auth.id'), primary_key=True)
@@ -93,7 +107,16 @@ class Applicant(Base):
     
 
 
+@dataclass
 class Employer(Base):
+    user_id : int
+    company_name : str
+    firstName : str
+    lastName : str
+    address : str
+    city : str
+    country : str
+    
     __tablename__ = 'employer'
     auth = db.relationship(Authentication)
     user_id = db.Column(db.Integer, db.ForeignKey('auth.id'),primary_key=True)

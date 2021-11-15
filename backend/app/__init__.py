@@ -10,7 +10,8 @@ from functools import wraps
 from flask_bcrypt import Bcrypt
 # Define the WSGI application object
 app = Flask(__name__)
-CORS(app)
+allowed_headers = ['Content-Type', 'Authorization', 'Access-Control-Allow-Headers','X-Requested-With','Access-Control-Allow-Origin']
+CORS(app,origins=['http://localhost:3000'],resources=r'/*', supports_credentials=True, allow_headers=allowed_headers)
 
 # Configurations
 app.config.from_object('config.DevelopmentConfig')
