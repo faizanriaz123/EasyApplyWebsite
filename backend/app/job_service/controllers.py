@@ -58,10 +58,10 @@ def create():
         if jobID == table.jobID and os.path.exists("../../../../applications/{jobID}/{userID}/pitch.mp4"):
             applicant_dict = {
                 "userID": userID,
-                "userName": applicants.userName,
+                "email": applicants.auth.email,
             }
             print(applicant_dict)
-            if(i < 9):
+            if(i < 10):
                 applicants_list["applicants"].append(applicant_dict)
                 i=i+1
     return make_response(jsonify(applicants_list))
