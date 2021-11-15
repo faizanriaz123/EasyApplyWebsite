@@ -1,5 +1,5 @@
 #TODO refactor into MVC
-
+import os
 # Import flask dependencies
 from operator import methodcaller
 from flask import Blueprint, request, render_template, \
@@ -57,7 +57,7 @@ def create():
         if jobID == table.jobID and os.path.exists("../../../../applications/{jobID}/{userID}/pitch.mp4"):
             applicant_dict = {
                 "userID": userID,
-                "userName": applicants.userName,
+                "userName": applicants.auth.email,
             }
             print(applicant_dict)
             applicants_list["applicants"].append(applicant_dict)
@@ -75,7 +75,7 @@ def create():
         if jobID == table.jobID:
             applicant_dict = {
                 "userID": applicants.userID,
-                "userName": applicants.userName,
+                "userName": applicants.auth.email,
             }
             print(applicant_dict)
             applicants_list["applicants"].append(applicant_dict)
