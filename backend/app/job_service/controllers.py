@@ -47,7 +47,7 @@ def applyjob():
 @job_service.route('/searchwithpitch/<jobID>', methods=['POST'])
 @login_required
 @require_role('employer')
-def create():
+def searchwithpitch():
     req = request.json
     jobID = req.get("jobID")
     table = db.session.execute("SELECT * FROM appliedjob")
@@ -66,7 +66,7 @@ def create():
 @job_service.route('/search/<jobID>', methods=['POST'])
 @login_required
 @require_role('employer')
-def create():
+def search():
     req = request.json
     jobID = req.get("jobID")
     table = db.session.execute("SELECT * FROM appliedjob")
