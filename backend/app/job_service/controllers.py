@@ -1,11 +1,10 @@
 #TODO refactor into MVC
-
+import os
 # Import flask dependencies
 from operator import methodcaller
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for, jsonify, \
                   make_response
-from flask.helpers import send_file
 from flask_login import current_user, login_required
 
 # Import the database object from the main app module
@@ -13,10 +12,6 @@ from app import db, require_role
 
 # Import module models ()
 from app.job_service.models import AppliedJob, Jobs
-
-import os
-
-import codecs
 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 job_service = Blueprint('jobs', __name__, url_prefix='/jobs')
@@ -43,34 +38,46 @@ def create():
 @login_required
 @require_role('applicant')
 def applyjob():
-    req = request.form 
+    req = request.json 
     jobID = req.get("jobID")
     db.session.add(AppliedJob(jobID,current_user.get_id()))
     db.session.commit()
-
-    filePathPDF = None
-    try:
-        if(request.files["resume"].filename != ""):
-            filePathPDF = os.path.dirname(__file__)+ "../../../../applications/" + str(jobID) + "/" + str(current_user.get_id())
-            if not os.path.exists(filePathPDF):
-                os.makedirs(filePathPDF)
-            filePathPDF = filePathPDF + "/resume.pdf"
-            request.files["resume"].save(filePathPDF)
-    except KeyError:
-        print("No PDF Attached")
-
-    filePathVid = None
-    try:
-        if(request.files["pitch"].filename != ""):
-            filePathVid = os.path.dirname(__file__)+ "../../../../applications/" + str(jobID) + "/" + str(current_user.get_id())
-            if not os.path.exists(filePathVid):
-                os.makedirs(filePathVid)
-            filePathVid = filePathVid + "/pitch.mp4"
-            request.files["pitch"].save(filePathVid)
-    except KeyError:
-        print("No Video Attached")
-
     return "sucessful commit"
+
+@job_service.route('/searchwithpitch', methods=['POST'])
+@login_required
+@require_role('employer')
+def searchwithpitch():
+    req = request.json
+    jobID = req.get("jobID")
+    table = db.session.execute("SELECT * FROM appliedjob")
+    applicants_list = {'applicants':[]}
+    for applicants in table:
+        userID = applicants.userID
+        if jobID == applicants.jobID and os.path.exists("../../../../applications/{jobID}/{userID}/pitch.mp4"):
+            applicant_dict = {
+                "userID": userID,
+            }
+            print(applicant_dict)
+            applicants_list["applicants"].append(applicant_dict)
+    return make_response(jsonify(applicants_list))
+
+@job_service.route('/search', methods=['POST'])
+@login_required
+@require_role('employer')
+def search():
+    req = request.json
+    jobID = req.get("jobID")
+    table = db.session.execute("SELECT * FROM appliedjob")
+    applicants_list = {'applicants':[]}
+    for applicants in table:
+        if (jobID == applicants.jobID):
+            applicant_dict = {
+                "userID": applicants.userID,
+            }
+            print(applicant_dict)
+            applicants_list["applicants"].append(applicant_dict)
+    return make_response(jsonify(applicants_list))
 
 @job_service.route('/get', methods=['GET'])
 @login_required
@@ -86,14 +93,13 @@ def get():
             "email": jobs.email,
             "industry": jobs.industry,
             "location": jobs.location,
-            "introduction": jobs.introduction,
-            "jobID": jobs.id
+            "introduction": jobs.introduction
         }
         print(job_dict)
         job_list["jobs"].append(job_dict)
     print(job_list)    
     return make_response(jsonify(job_list))
-        
+
 @job_service.route('/search/<userInput>', methods=['GET'])
 def displayJob(userInput):
     #if any stuff contains search input, then 1 else 0 for score. Then display all jobs with score of 1 
@@ -116,36 +122,3 @@ def displayJob(userInput):
             job_list["jobs"].append(job_dict)
     print(job_list)    
     return make_response(jsonify(job_list))
-
-@job_service.route('/getfile', methods=['PUT'])
-@login_required
-@require_role('employer')
-def getFile():
-    req = request.json
-    print(req)
-    text = req.get("type")
-    userId = req.get("userId")
-    jobId = req.get("jobId")
-
-    print(text)
-
-    if(text == "resume"):
-        filePath = os.path.dirname(__file__)+ "../../../../applications/" + str(jobId) + "/" + str(userId) + "/resume.pdf"
-        if not os.path.exists(filePath):
-            return "Resume doesn't exist", 403
-        else:
-            return send_file(filePath, mimetype='application.pdf')
-    elif(text == "pitch" and jobId != None):
-        filePath = os.path.dirname(__file__)+ "../../../../applications/" + str(jobId) + "/" + str(userId) + "/pitch.mp4"
-        if not os.path.exists(filePath):
-            return "Pitch doesn't exist", 403
-        else:
-            return send_file(filePath, mimetype="video/mp4")
-    elif(text == "pitch"):
-        filePath = os.path.dirname(__file__)+ "../../../../pitch/" + str(userId) + "/pitch.mp4"
-        if not os.path.exists(filePath):
-            return "Pitch doesn't exist", 403
-        else:
-            return send_file(filePath, mimetype="video/mp4")
-    else:
-        return "invalide file requested", 403
