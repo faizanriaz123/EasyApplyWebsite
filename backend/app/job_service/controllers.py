@@ -13,8 +13,6 @@ from app import db, require_role
 # Import module models ()
 from app.job_service.models import AppliedJob, Jobs
 
-import os
-
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 job_service = Blueprint('jobs', __name__, url_prefix='/jobs')
 
@@ -40,33 +38,10 @@ def create():
 @login_required
 @require_role('applicant')
 def applyjob():
-    req = request.form 
+    req = request.json 
     jobID = req.get("jobID")
     db.session.add(AppliedJob(jobID,current_user.get_id()))
     db.session.commit()
-
-    filePathPDF = None
-    try:
-        if(request.files["resume"].filename != ""):
-            filePathPDF = os.path.dirname(__file__)+ "../../../../applications/" + str(jobID) + "/" + str(current_user.get_id())
-            if not os.path.exists(filePathPDF):
-                os.makedirs(filePathPDF)
-            filePathPDF = filePathPDF + "/resume.pdf"
-            request.files["resume"].save(filePathPDF)
-    except KeyError:
-        print("No PDF Attached")
-
-    filePathVid = None
-    try:
-        if(request.files["pitch"].filename != ""):
-            filePathVid = os.path.dirname(__file__)+ "../../../../applications/" + str(jobID) + "/" + str(current_user.get_id())
-            if not os.path.exists(filePathVid):
-                os.makedirs(filePathVid)
-            filePathVid = filePathVid + "/pitch.mp4"
-            request.files["pitch"].save(filePathVid)
-    except KeyError:
-        print("No Video Attached")
-
     return "sucessful commit"
 
 @job_service.route('/searchwithpitch', methods=['POST'])
@@ -118,8 +93,7 @@ def get():
             "email": jobs.email,
             "industry": jobs.industry,
             "location": jobs.location,
-            "introduction": jobs.introduction,
-            "jobID": jobs.id
+            "introduction": jobs.introduction
         }
         print(job_dict)
         job_list["jobs"].append(job_dict)
