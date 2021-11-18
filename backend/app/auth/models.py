@@ -14,27 +14,12 @@ class Base(db.Model):
                                            onupdate=db.func.current_timestamp())
 
 # Define a User model
-class UserRoles(Base):
-    __tablename__ = 'user_roles'
-    id = db.Column(db.Integer(), primary_key=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey('auth.id', ondelete='CASCADE'))
-    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
-    # status   = db.Column(db.SmallInteger, nullable=False)
-
-    def __init__(self, user_id, role_id):
-        self.user_id = user_id
-        self.role_id = role_id
-        # self.status = status
-
-    def __repr__(self):
-        return '<Role user:{}, role:{}, status:{}>'.format(self.user_id, self.role_id, self.status)     
-
 class Role(Base):
     __tablename__ = 'roles'
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(50), unique=True)
 
-
+    
 class Authentication(UserMixin, Base):
     __tablename__ = 'auth'
     id    = db.Column(db.Integer, primary_key=True)
@@ -63,6 +48,22 @@ class Authentication(UserMixin, Base):
     
     def __repr__(self):
         return '<Auth user:{}>'.format(self.id)     
+class UserRoles(Base):
+    __tablename__ = 'user_roles'
+    id = db.Column(db.Integer(), primary_key=True)
+    roles = db.relationship(Role)
+    auth = db.relationship(Authentication)
+    user_id = db.Column(db.Integer(), db.ForeignKey('auth.id', ondelete='CASCADE'))
+    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
+    # status   = db.Column(db.SmallInteger, nullable=False)
+
+    def __init__(self, user_id, role_id):
+        self.user_id = user_id
+        self.role_id = role_id
+        # self.status = status
+
+    def __repr__(self):
+        return '<Role user:{}, role:{}, status:{}>'.format(self.user_id, self.role_id, self.status)     
 
 @dataclass
 class Applicant(Base):
@@ -79,7 +80,7 @@ class Applicant(Base):
 
     __tablename__ = 'applicant'
     auth = db.relationship(Authentication)
-    user_id = db.Column(db.Integer, db.ForeignKey('auth.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('auth.id', ondelete='CASCADE'), primary_key=True)
     firstName = db.Column(db.String(128),  nullable=False)
     lastName = db.Column(db.String(128),  nullable=False)
     address = db.Column(db.String(128),  nullable=False)
@@ -119,7 +120,7 @@ class Employer(Base):
     
     __tablename__ = 'employer'
     auth = db.relationship(Authentication)
-    user_id = db.Column(db.Integer, db.ForeignKey('auth.id'),primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('auth.id', ondelete='CASCADE'),primary_key=True)
     company_name = db.Column(db.String(128), nullable=False)
     firstName = db.Column(db.String(128),  nullable=False)
     lastName = db.Column(db.String(128),  nullable=False)

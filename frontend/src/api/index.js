@@ -6,8 +6,10 @@ import axios from 'axios';
 // }
 // axios.defaults.withCredentials = true;
 // axios.defaults.crossorigin = true
-const req = axios.create({
+var req = axios.create({
     baseURL: "http://localhost:8080/",
+    withCredentials: true,
+    crossorigin: true
 });
 
 
