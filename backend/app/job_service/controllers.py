@@ -69,7 +69,7 @@ def applyjob():
 
     return "sucessful commit"
 
-@job_service.route('/searchwithpitch/<jobID>', methods=['POST'])
+@job_service.route('/searchwithpitch', methods=['POST'])
 @login_required
 @require_role('employer')
 def searchwithpitch():
@@ -79,16 +79,15 @@ def searchwithpitch():
     applicants_list = {'applicants':[]}
     for applicants in table:
         userID = applicants.userID
-        if jobID == table.jobID and os.path.exists("../../../../applications/{jobID}/{userID}/pitch.mp4"):
+        if jobID == applicants.jobID and os.path.exists("../../../../applications/{jobID}/{userID}/pitch.mp4"):
             applicant_dict = {
                 "userID": userID,
-                "userName": applicants.auth.email,
             }
             print(applicant_dict)
             applicants_list["applicants"].append(applicant_dict)
     return make_response(jsonify(applicants_list))
 
-@job_service.route('/search/<jobID>', methods=['POST'])
+@job_service.route('/search', methods=['POST'])
 @login_required
 @require_role('employer')
 def search():
@@ -97,10 +96,9 @@ def search():
     table = db.session.execute("SELECT * FROM appliedjob")
     applicants_list = {'applicants':[]}
     for applicants in table:
-        if jobID == table.jobID:
+        if (jobID == applicants.jobID):
             applicant_dict = {
                 "userID": applicants.userID,
-                "userName": applicants.auth.email,
             }
             print(applicant_dict)
             applicants_list["applicants"].append(applicant_dict)
