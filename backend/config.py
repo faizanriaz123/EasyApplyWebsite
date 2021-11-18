@@ -19,7 +19,7 @@ class DevelopmentConfig(Config):
     MAIL_PASSWORD = 'pojtan-todMu5-sitkeh'#os.getenv('MAIL_PASSWORD')
     MAIL_PORT = 587
     SECRET_KEY = '9b5d6d7fc07866d6f364dd509477ceb520322f7ceaa2587eb87df37a1a97c9a7'
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:5432/dummyDB"
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:5432/dummydb"
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
