@@ -41,7 +41,7 @@ class AppliedJob(Base):
     auth = db.relationship(Authentication)
     jobID = db.Column(db.Integer,nullable=False)
     userID = db.Column(db.Integer, db.ForeignKey('auth.id'), nullable = False)
-    __table_args__ = (db.UniqueConstraint('jobID', 'userID'))
+    __table_args__ = (db.UniqueConstraint('jobID', 'userID'),)
 
     
     # New instance instantiation procedure

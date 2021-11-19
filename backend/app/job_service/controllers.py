@@ -47,7 +47,7 @@ def applyjob():
 @job_service.route('/searchtop10/<jobID>', methods=['POST'])
 @login_required
 @require_role('employer')
-def create():
+def searchtop10():
     req = request.json
     jobID = req.get("jobID")
     table = db.session.execute("SELECT * FROM appliedjob")
@@ -55,10 +55,9 @@ def create():
     i = 0
     for applicants in table:
         userID = applicants.userID
-        if jobID == table.jobID and os.path.exists("../../../../applications/{jobID}/{userID}/pitch.mp4"):
+        if jobID == applicants.jobID and os.path.exists("../../../../applications/{jobID}/{userID}/pitch.mp4"):
             applicant_dict = {
                 "userID": userID,
-                "email": applicants.auth.email,
             }
             print(applicant_dict)
             if(i < 10):
