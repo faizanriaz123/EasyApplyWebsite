@@ -1,15 +1,11 @@
 import {useState} from "react";
-import NavBar from "../../Components/NavBar"
+import navBar from "../../Components/NavBar"
 import api from "../../api";
 import Button from '@mui/material/Button';
 import data from "./mock_data.json"
 import "./dashboard.css";
-import {useHistory} from "react-router-dom"
+import { useState } from "react";
 
-const handleClick = () => {
-    let path = "/postJob";
-    history.push(path);
-}
 
 function DashBoard(){
     const [tableInfo, setTableInfo] = useState(data);
@@ -45,7 +41,7 @@ function DashBoard(){
                 </table>
             </div>
             <div id="postJobButton">
-                <Button id = "button" onClick={handleClick}>post a new job</Button>
+                <Button id = "button">post job</Button>
             </div>
         </div>
     )

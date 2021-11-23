@@ -15,7 +15,6 @@ import landingPage from "./pages/Landing";
 import profilePage from "./pages/profilePage";
 import ConfirmEmail from "./pages/ConfirmEmail";
 import dashboard from "./pages/Dashboard"
-import PostJob from "./pages/PostJob"
 
 function App() {
   return (
@@ -29,7 +28,6 @@ function App() {
         <Route path="/confirmEmail" component={ConfirmEmail}/>
         <Route path="/reset-password" component={ResetPassword}/>
         <Route path="/dashboard" exact component={dashboard}/>
-        <Route path="/postJob" exact component={PostJob}/>
     </Switch>
   );
 }
