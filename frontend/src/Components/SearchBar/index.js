@@ -1,10 +1,21 @@
 import React, {useState, useEffect} from 'react';
-import { Table, Button, Space, Form, Input} from "antd"; 
+import axios from "axios"; 
+import { Table, Popconfirm, Button, Space, Form, Input} from "antd"; 
+import {isEmpty} from "lodash";
 import { useHistory } from "react-router-dom";
 import NavBar from "../NavBar"; 
-import './SearchBar.css';
 import Paper from '@mui/material/Paper';
+
+
+import { render } from 'react-dom';
+import { slideDown, slideUp } from './anim';
+import './SearchBar.css';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 import api from "../../api"; 
+import PopUp from "../PopUp"; 
+import { useTheme } from '@emotion/react';
+import { is } from 'date-fns/locale';
 
 const DataTable = () => {
     const [gridData, setGridData] = useState([]); 
@@ -20,6 +31,14 @@ const DataTable = () => {
 
     useEffect(() => {
         loadData();
+
+        api.get("/jobs/checkApplicant").then((resp) => {
+            if(resp.status != 200) {
+                history.push("/login")
+            }
+        }).catch((err) => {
+            history.push("/login")
+        });
     }, [])
 
     const loadData = async() => {
@@ -29,6 +48,13 @@ const DataTable = () => {
         setGridData(myData2); 
         setLoading(false); 
     }
+
+    const handleApply = () => {
+
+
+    }; 
+ 
+   // console.log("gridData", gridData); 
 
     const columns = [{ 
         title: "ID",
@@ -88,6 +114,13 @@ const globalSearch = () => {
     setGridData(filteredData); 
 }; 
 
+// const modifiedData = gridData.map(({body,...item}) => ({
+
+//     ...item, 
+//     key: item.id, 
+//     comment: isEmpty(introduction) ? item.comment: introduction, 
+
+// }));
 
 const clearAll = () =>{
     setSearchText("");
@@ -109,7 +142,6 @@ const clearAll = () =>{
             </Space>
             <Form form={form}>
                 <Table 
-                rowClassName="table-rows"
                 columns={columns}
                 expandable = {{
                     expandedRowRender: (record) => (
