@@ -25,15 +25,15 @@ function PostJob() {
     const [Description, setDescription] = useState('');
     const history = useHistory();
 
-    // useEffect(() => {
-    //     req.get("/jobs/checkEmployer").then((resp) => {
-    //         if(resp.status != 200) {
-    //             history.push("/login")
-    //         }
-    //     }).catch((err) => {
-    //         history.push("/login")
-    //     });
-    // }, []);
+    useEffect(() => {
+        req.get("/jobs/checkEmployer").then((resp) => {
+            if(resp.status != 200) {
+                history.push("/login")
+            }
+        }).catch((err) => {
+            history.push("/login")
+        });
+    }, []);
 
     const handleTitleChange = event => {
         setTitle(event.target.value);
