@@ -2,11 +2,20 @@ import * as React from "react";
 import { useState, useEffect } from 'react'
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Container } from "@mui/material";
+import { Container, textFieldClasses } from "@mui/material";
 import req from "../../api/index";
 import { useHistory } from "react-router";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function PostJob() {
+
+    const outerTheme = createTheme({
+        palette: {
+          primary: {
+            main: '#00FECF',
+          },
+        },
+      });
 
     const [Title, setTitle] = useState('');
     const [Company, setCompany] = useState('');
@@ -16,15 +25,15 @@ function PostJob() {
     const [Description, setDescription] = useState('');
     const history = useHistory();
 
-    useEffect(() => {
-        req.get("/jobs/checkEmployer").then((resp) => {
-            if(resp.status != 200) {
-                history.push("/login")
-            }
-        }).catch((err) => {
-            history.push("/login")
-        });
-    }, []);
+    // useEffect(() => {
+    //     req.get("/jobs/checkEmployer").then((resp) => {
+    //         if(resp.status != 200) {
+    //             history.push("/login")
+    //         }
+    //     }).catch((err) => {
+    //         history.push("/login")
+    //     });
+    // }, []);
 
     const handleTitleChange = event => {
         setTitle(event.target.value);
@@ -57,8 +66,8 @@ function PostJob() {
             introduction: Description})
         }
     return (
-        <Container>
-            <div className="">
+        <ThemeProvider theme={outerTheme}>
+        <Container  maxWidth="xl" sx={{height: 1/1}} style={{ backgroundColor: '#FFFFFF' }}>
             <TextField
             id="standard-textarea"
             label="Job Title"
@@ -73,7 +82,7 @@ function PostJob() {
             label="Company Name"
             placeholder="Enter your company's name here."
             variant="standard"
-            sx={{ m: 1, width: '48%' }}
+            sx={{ m: 1, width: '100%' }}
             value={Company}
             onChange= {handleCompanyChange}
             />
@@ -82,7 +91,7 @@ function PostJob() {
             label="Email"
             placeholder="Enter your company's email here."
             variant="standard"
-            sx={{ m: 1, width: '48%' }}
+            sx={{ m: 1, width: '100%' }}
             value={Email}
             onChange= {handleEmailChange}
             />
@@ -91,7 +100,7 @@ function PostJob() {
             label="Industry"
             placeholder="Enter industry here."
             variant="standard"
-            sx={{ m: 1, width: '48%' }}
+            sx={{ m: 1, width: '100%' }}
             value={Industry}
             onChange= {handleIndustryChange}
             />
@@ -100,7 +109,7 @@ function PostJob() {
             label="Location"
             placeholder="Enter your job's location here."
             variant="standard"
-            sx={{ m: 1, width: '48%' }}
+            sx={{ m: 1, width: '100%' }}
             value={Location}
             onChange= {handleLocationChange}
             />
@@ -114,9 +123,9 @@ function PostJob() {
             value= {Description}
             onChange= {handleDescriptionChange}
             />
-            </div>
-            <Button variant="contained" onClick={handleClick}>Post the job</Button>
+            <Button variant="contained" style={{backgroundColor: "#2b2b2b", color: "#00FECF" }} onClick={handleClick}>Post the job</Button>
         </Container>
+        </ThemeProvider>
     )
 }
 export default PostJob;
