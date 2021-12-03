@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Grid, Button} from "@material-ui/core";
+import './index.css';
+import 'antd/dist/antd.css';
+
 
 const FileUploader = props => {
   const hiddenFileInput = React.useRef(null);
@@ -29,12 +32,15 @@ const FileUploader = props => {
       else {
         props.setSelectedFile(event.target.files[0])
         setFileName(event.target.files[0].name)
+
       }
     }
 
   };
+
   return (
     <Grid fullwidth>
+
         <Button onClick={handleClick} fullwidth variant="contained"
                   color="primary">
         {props.text} 
