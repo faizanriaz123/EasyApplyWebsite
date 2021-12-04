@@ -43,7 +43,7 @@ function PricingContent() {
         </Toolbar>
       </AppBar>
       {/* Hero unit */}
-      <Container disableGutters maxWidth="xl" component="main" sx={{ pt: 8, pb: 6 }} style={{ backgroundColor: '#FFFFFF' }} >
+      <Container disableGutters maxWidth="xl" component="main" sx={{ pt: 8, pb: 6 }} style={{ backgroundColor: '#2b2b2b'}} >
         <Typography
           component="h1"
           variant="h2"
@@ -53,7 +53,7 @@ function PricingContent() {
         >
           <img src={logo}></img>
         </Typography>
-        <Typography variant="h5" align="center" color="text.secondary" component="p">
+        <Typography variant="h5" align="center" color="#00FECF" component="p">
             Looking for a job? Look no further...
             <br></br>Tired of shifting through resumes? Then don't!
         </Typography>

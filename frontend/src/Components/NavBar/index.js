@@ -9,6 +9,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import HistoryIcon from "@mui/icons-material/History";
 import InfoIcon from "@mui/icons-material/Info";
 import logo from "./easy-apply_logo.jpg";
+import "./NavBar.css";
 
 export default function NavBar() {
   return (

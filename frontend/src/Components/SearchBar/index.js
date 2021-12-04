@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react';
+import 'antd/dist/antd.css';
+
 import axios from "axios"; 
 import { Table, Popconfirm, Button, Space, Form, Input} from "antd"; 
 import {isEmpty} from "lodash";
@@ -48,11 +50,6 @@ const DataTable = () => {
         setGridData(myData2); 
         setLoading(false); 
     }
-
-    const handleApply = () => {
-
-
-    }; 
  
    // console.log("gridData", gridData); 
 
@@ -124,41 +121,36 @@ const globalSearch = () => {
 
 const clearAll = () =>{
     setSearchText("");
+    loadData();
 }
  
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden',backgroundColor: '#2b2b2b', height: "100vh" }}>
+ 
         <NavBar/>
-            <Space style={{marginBottom: 16}}>
-            <Input 
-                placeholder="Search for Jobs"
-                onChange={handleSearch}
-                type="text"
-                allowClear
-                value= {searchText}
+        <Space style={{marginBottom: 16}}>
+        <Input
+            placeholder="Search for Jobs"
+            onChange={handleSearch}
+            type="text"
+            allowClear
+            value= {searchText}
+        />
+            <Button type="primary" onClick={globalSearch}>Search</Button>
+            <Button onClick={clearAll}>Clear All</Button>       
+
+        </Space>
+            <Table
+            columns={columns}
+            expandable = {{
+                expandedRowRender: record => 
+                    <p style={{margin: 0}}>{record.introduction}</p>,
+                rowExpandable: record => record.introduction !== "Not Expandable",
+            }}
+            dataSource={filteredData && filteredData.length ? filteredData : gridData}
             />
-                <Button type="primary" onClick={globalSearch}>Search</Button>
-                <Button onClick={clearAll}>Clear All</Button>            
-            </Space>
-            <Form form={form}>
-                <Table 
-                columns={columns}
-                expandable = {{
-                    expandedRowRender: (record) => (
-                        <p style={{margin: 0}}>{record.introduction}</p>
-                    ),
-                    rowExpandable: (record) => record.introduction !== "Not Expandable",
-
-                }}
-                dataSource={filteredData && filteredData.length ? filteredData : gridData}
-                bordered
-                loading={loading}
-                pagination
-                />
-            </Form>
         </Paper>
-
-    ); 
+        );
 }; 
  
 export default DataTable

@@ -12,7 +12,7 @@ from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_login import  login_user, logout_user, current_user, login_required
 
 # Import the database object from the main app module and bcrypt
-from app import db, bcrypt, login_manager, app, require_role, mail, app
+from app import db, bcrypt, login_manager, app, require_role, mail
 # Import module models 
 from app.auth.models import Role, Applicant, Employer, Authentication
 
@@ -226,7 +226,11 @@ def get_profile():
         data = Applicant.query.filter_by(user_id=current_user.get_id()).first()
     else:
         data = Employer.query.filter_by(user_id=current_user.get_id()).first()
-    return make_response(jsonify(data), 201)
+    # print(data.__dict__)
+    # print()
+    # return make_response(jsonify(dumps(data.__dict__)),201)
+    print(jsonify(data))
+    return make_response(jsonify(data),201)
 
 @auth_service.route("/profile", methods=['PUT'])
 def edit_profile():

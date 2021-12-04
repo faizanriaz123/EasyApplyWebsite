@@ -13,4 +13,4 @@ var req = axios.create({
 });
 
 
-export default req
+export default req;
